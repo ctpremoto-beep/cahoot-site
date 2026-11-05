@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cahoot — The Best HOOT Pair</title>
+  <meta name="description" content="Cahoot is in cahoot with Hoot. The best $HOOT pair on JustHoot / NEAR." />
+  <meta name="theme-color" content="#4BA3F7" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      /* HOOT / justhoot.fun DNA */
+      --accent: #ff8a1f;
+      --accent-2: #ffa64f;
+      --accent-ink: #150b02;
+      --up: #2fcf8a;
+      --info: #7fb4ff;
+      --dark: #0e0c0b;
+      --panel: #181513;
+      --text-dark: #1a1512;
+      --muted: #5a534c;
+
+      /* Cahoot blue-sky twist */
+      --sky-top: #6ec8ff;
+      --sky-mid: #4BA3F7;
+      --sky-bot: #9fe0ff;
+      --cloud: rgba(255,255,255,0.92);
+      --cream: #fff8ef;
+      --card: rgba(255,248,239,0.92);
+      --card-border: rgba(21,11,2,0.08);
+
+      --sans: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+      --r: 16px;
+      --r-lg: 24px;
+      --shadow: 0 18px 50px rgba(14, 40, 80, 0.18), 0 2px 0 rgba(255,255,255,0.35) inset;
+      --buddy-size: clamp(88px, 14vw, 150px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      color: var(--text-dark);
+      background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 35%, var(--sky-bot) 70%, #c8ecff 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== SKY / CLOUDS ===== */
+    .sky-decor {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .cloud {
+      position: absolute;
+      background: var(--cloud);
+      border-radius: 999px;
+      filter: drop-shadow(0 8px 18px rgba(40,90,140,0.12));
+      opacity: 0.85;
+      animation: drift linear infinite;
+    }
+    .cloud::before, .cloud::after {
+      content: ""; position: absolute; background: inherit; border-radius: 50%;
+    }
+    .cloud.c1 { width: 180px; height: 54px; top: 8%; left: -10%; animation-duration: 70s; }
+    .cloud.c1::before { width: 70px; height: 70px; top: -38px; left: 28px; }
+    .cloud.c1::after { width: 90px; height: 90px; top: -48px; left: 70px; }
+    .cloud.c2 { width: 240px; height: 64px; top: 22%; left: 55%; animation-duration: 95s; animation-delay: -20s; opacity: 0.7; }
+    .cloud.c2::before { width: 90px; height: 90px; top: -48px; left: 40px; }
+    .cloud.c2::after { width: 110px; height: 110px; top: -58px; left: 100px; }
+    .cloud.c3 { width: 160px; height: 48px; top: 48%; left: 10%; animation-duration: 80s; animation-delay: -40s; }
+    .cloud.c3::before { width: 60px; height: 60px; top: -32px; left: 24px; }
+    .cloud.c3::after { width: 80px; height: 80px; top: -42px; left: 60px; }
+    .cloud.c4 { width: 200px; height: 56px; top: 72%; left: 70%; animation-duration: 110s; animation-delay: -10s; opacity: 0.75; }
+    .cloud.c4::before { width: 76px; height: 76px; top: -40px; left: 36px; }
+    .cloud.c4::after { width: 96px; height: 96px; top: -50px; left: 80px; }
+    .cloud.c5 { width: 140px; height: 42px; top: 88%; left: 30%; animation-duration: 85s; animation-delay: -55s; }
+    .cloud.c5::before { width: 54px; height: 54px; top: -28px; left: 20px; }
+    .cloud.c5::after { width: 70px; height: 70px; top: -36px; left: 52px; }
+    @keyframes drift {
+      from { transform: translateX(0); }
+      to { transform: translateX(120vw); }
+    }
+
+    /* ===== LAYOUT ===== */
+    .wrap {
+      position: relative; z-index: 2;
+      width: min(1080px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 1.25rem 0 4rem;
+    }
+    @media (max-width: 720px) {
+      .wrap { width: min(1080px, calc(100% - 1.25rem)); }
+    }
+
+    /* ===== NAV ===== */
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; padding: 0.75rem 1rem;
+      background: rgba(255,248,239,0.78);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 999px;
+      box-shadow: var(--shadow);
+      position: sticky; top: 0.75rem; z-index: 40;
+      margin-bottom: 2rem;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 0.65rem;
+      font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em;
+      text-decoration: none; color: var(--text-dark);
+    }
+    .brand img { width: 36px; height: 36px; object-fit: contain; }
+    .brand span.accent { color: var(--accent); }
+    .nav-links { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+    .nav-links a {
+      text-decoration: none; color: var(--text-dark);
+      font-weight: 600; font-size: 0.92rem;
+      padding: 0.45rem 0.85rem; border-radius: 999px;
+      transition: background .2s, color .2s;
+    }
+    .nav-links a:hover { background: var(--accent); color: #fff; }
+    .pill-hoot {
+      background: var(--accent) !important; color: #fff !important;
+      box-shadow: 0 6px 16px rgba(255,138,31,0.35);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      text-align: center;
+      padding: 2.5rem 1rem 1.5rem;
+      position: relative;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      background: rgba(14,12,11,0.88);
+      color: #f5f1eb;
+      font-family: var(--mono);
+      font-size: 0.78rem; font-weight: 600;
+      padding: 0.4rem 0.85rem; border-radius: 999px;
+      margin-bottom: 1.25rem;
+      letter-spacing: 0.02em;
+    }
+    .badge .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--up); box-shadow: 0 0 0 3px rgba(47,207,138,0.25);
+      animation: pulse 1.8s ease infinite;
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.15); opacity: 0.7; }
+    }
+    .hero h1 {
+      font-size: clamp(2.6rem, 8vw, 5.2rem);
+      font-weight: 900; letter-spacing: -0.04em; line-height: 0.95;
+      color: #fff;
+      text-shadow: 0 4px 0 rgba(21,11,2,0.15), 0 18px 40px rgba(20,60,120,0.25);
+      margin-bottom: 0.85rem;
+    }
+    .hero h1 .orange { color: var(--accent); text-shadow: 0 4px 0 rgba(150,60,0,0.2), 0 18px 40px rgba(255,138,31,0.35); }
+    .tagline {
+      font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+      font-weight: 700; color: rgba(255,255,255,0.95);
+      max-width: 34rem; margin: 0 auto 1.75rem;
+      text-shadow: 0 2px 12px rgba(20,60,120,0.25);
+    }
+    .hero-pair {
+      display: flex; align-items: flex-end; justify-content: center;
+      gap: clamp(0.5rem, 3vw, 2rem);
+      margin: 1.5rem auto 2rem;
+      position: relative;
+      min-height: 220px;
+    }
+    .hero-owl {
+      width: clamp(140px, 28vw, 240px);
+      height: auto;
+      filter: drop-shadow(0 18px 28px rgba(20,50,90,0.28));
+      animation: floaty 4s ease-in-out infinite;
+      user-select: none;
+      pointer-events: none;
+    }
+    .hero-owl.hoot { animation-delay: -1.5s; width: clamp(120px, 24vw, 210px); }
+    .hero-x {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 900; color: #fff;
+      text-shadow: 0 3px 0 rgba(21,11,2,0.2);
+      margin-bottom: 3.5rem;
+      animation: spinsoft 8s linear infinite;
+    }
+    @keyframes floaty {
+      0%,100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-14px) rotate(2deg); }
+    }
+    @keyframes spinsoft {
+      0%,100% { transform: rotate(-8deg) scale(1); }
+      50% { transform: rotate(8deg) scale(1.08); }
+    }
+    .cta-row {
+      display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;
+      margin-top: 0.5rem;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--sans); font-weight: 800; font-size: 1rem;
+      padding: 0.85rem 1.35rem; border-radius: 999px;
+      border: none; cursor: pointer; text-decoration: none;
+      transition: transform .15s, box-shadow .2s, background .2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      box-shadow: 0 10px 28px rgba(255,138,31,0.4);
+    }
+    .btn-primary:hover { background: var(--accent-2); }
+    .btn-ghost {
+      background: rgba(255,255,255,0.88); color: var(--text-dark);
+      border: 1px solid rgba(21,11,2,0.08);
+      box-shadow: 0 8px 24px rgba(20,50,90,0.12);
+    }
+
+    /* ===== CARDS / SECTIONS ===== */
+    section {
+      margin: 2.5rem 0;
+      scroll-margin-top: 5.5rem;
+    }
+    .card {
+      background: var(--card);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow);
+      padding: clamp(1.4rem, 3vw, 2.25rem);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--info), var(--up));
+      opacity: 0.9;
+    }
+    .section-kicker {
+      font-family: var(--mono); font-size: 0.78rem; font-weight: 700;
+      color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 0.55rem;
+    }
+    .section-title {
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      font-weight: 900; letter-spacing: -0.03em;
+      margin-bottom: 0.85rem; color: var(--dark);
+    }
+    .section-body {
+      font-size: 1.05rem; color: var(--muted); max-width: 48rem;
+    }
+    .section-body strong { color: var(--text-dark); font-weight: 800; }
+
+    .grid-2 {
+      display: grid; gap: 1.25rem;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 720px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .owl-card {
+      background: linear-gradient(160deg, #fff 0%, #fff4e6 100%);
+      border: 1px solid rgba(255,138,31,0.18);
+      border-radius: var(--r);
+      padding: 1.25rem;
+      text-align: center;
+      transition: transform .25s;
+    }
+    .owl-card:hover { transform: translateY(-4px); }
+    .owl-card img {
+      width: min(160px, 50%); height: auto;
+      filter: drop-shadow(0 10px 16px rgba(20,40,60,0.15));
+      margin-bottom: 0.75rem;
+    }
+    .owl-card h3 {
+      font-size: 1.25rem; font-weight: 900; margin-bottom: 0.35rem;
+    }
+    .owl-card h3 .tag {
+      display: inline-block; font-family: var(--mono); font-size: 0.72rem;
+      background: var(--dark); color: #f5f1eb;
+      padding: 0.15rem 0.45rem; border-radius: 6px;
+      vertical-align: middle; margin-left: 0.25rem;
+    }
+    .owl-card p { font-size: 0.95rem; color: var(--muted); }
+
+    /* scheming strip */
+    .scheme {
+      margin-top: 1.5rem;
+      background: var(--dark);
+      color: #f5f1eb;
+      border-radius: var(--r);
+      padding: 1.25rem 1.4rem;
+      display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+    }
+    .scheme .emoji { font-size: 1.6rem; }
+    .scheme p { flex: 1; min-width: 200px; font-size: 0.98rem; color: #d6cfc6; }
+    .scheme p strong { color: var(--accent-2); }
+
+    /* ===== CA ===== */
+    .ca-box {
+      display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;
+      margin-top: 1.25rem;
+      background: #0e0c0b;
+      border-radius: 14px;
+      padding: 0.85rem 1rem;
+      border: 1px solid #2b2723;
+    }
+    .ca-label {
+      font-family: var(--mono); font-size: 0.75rem; font-weight: 700;
+      color: var(--accent); letter-spacing: 0.06em;
+    }
+    .ca-value {
+      flex: 1; min-width: 0;
+      font-family: var(--mono); font-size: clamp(0.7rem, 2.2vw, 0.88rem);
+      color: #f5f1eb; word-break: break-all;
+    }
+    .copy-btn {
+      font-family: var(--sans); font-weight: 800; font-size: 0.88rem;
+      background: var(--accent); color: #fff; border: none;
+      padding: 0.55rem 1rem; border-radius: 10px; cursor: pointer;
+      white-space: nowrap;
+      transition: background .15s, transform .15s;
+    }
+    .copy-btn:hover { background: var(--accent-2); transform: translateY(-1px); }
+    .copy-btn.copied { background: var(--up); }
+
+    .pair-note {
+      margin-top: 1rem;
+      display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center;
+      font-size: 0.95rem; color: var(--muted);
+    }
+    .pair-note a {
+      color: var(--accent); font-weight: 800; text-decoration: none;
+    }
+    .pair-note a:hover { text-decoration: underline; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: rgba(255,138,31,0.12);
+      color: #b35a00;
+      font-weight: 700; font-size: 0.82rem;
+      padding: 0.3rem 0.65rem; border-radius: 999px;
+    }
+
+    /* ===== WHY / FEATURES ===== */
+    .features {
+      display: grid; gap: 1rem;
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 1.25rem;
+    }
+    @media (max-width: 800px) {
+      .features { grid-template-columns: 1fr; }
+    }
+    .feat {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(21,11,2,0.06);
+      border-radius: 14px;
+      padding: 1.1rem 1.15rem;
+    }
+    .feat .icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff; font-size: 1.2rem; margin-bottom: 0.7rem;
+      box-shadow: 0 8px 18px rgba(255,138,31,0.3);
+    }
+    .feat h4 { font-weight: 900; font-size: 1.05rem; margin-bottom: 0.3rem; }
+    .feat p { font-size: 0.92rem; color: var(--muted); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      padding: 2rem 1rem 5rem;
+      color: rgba(255,255,255,0.92);
+    }
+    footer .hootline {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 900; letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 3px 0 rgba(21,11,2,0.15);
+    }
+    footer p { opacity: 0.9; font-weight: 600; margin-bottom: 1rem; }
+    footer .tiny {
+      font-family: var(--mono); font-size: 0.75rem;
+      opacity: 0.75; max-width: 32rem; margin: 0.75rem auto 0;
+    }
+    footer a { color: #fff; font-weight: 800; }
+
+    /* ===== SCROLL BUDDIES ===== */
+    .buddy {
+      position: fixed;
+      width: var(--buddy-size);
+      height: auto;
+      z-index: 30;
+      pointer-events: none;
+      will-change: transform, left, right, top;
+      filter: drop-shadow(0 12px 18px rgba(20,50,90,0.28));
+      transition: opacity 0.35s ease;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .buddy.cahoot { left: 0.4rem; top: 30%; }
+    .buddy.hoot { right: 0.4rem; top: 42%; }
+    .buddy.hidden-mobile { }
+    @media (max-width: 640px) {
+      :root { --buddy-size: clamp(64px, 18vw, 96px); }
+      .buddy.cahoot { left: -0.15rem; }
+      .buddy.hoot { right: -0.15rem; }
+    }
+    /* peek behind cards via mix — handled in JS with opacity dips */
+
+    .sun {
+      position: fixed;
+      top: -40px; right: -40px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, #ffe9a8 0%, #ffc14a 45%, rgba(255,138,31,0) 70%);
+      z-index: 0; pointer-events: none;
+      opacity: 0.85;
+    }
+
+    /* reduce motion */
+    @media (prefers-reduced-motion: reduce) {
+      .cloud, .hero-owl, .hero-x, .badge .dot { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sky-decor" aria-hidden="true">
+    <div class="sun"></div>
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+    <div class="cloud c4"></div>
+    <div class="cloud c5"></div>
+  </div>
+
+  <!-- Scroll buddies -->
+  <img class="buddy cahoot" id="buddyCahoot" src="assets/cahoot-owl.png" alt="" aria-hidden="true" />
+  <img class="buddy hoot" id="buddyHoot" src="assets/hoot-owl.png" alt="" aria-hidden="true" />
+
+  <div class="wrap">
+    <nav class="nav">
+      <a class="brand" href="#top">
+        <img src="assets/cahoot-owl.png" alt="" />
+        <span>$CA<span class="accent">HOOT</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="#lore">Lore</a>
+        <a href="#ca">CA</a>
+        <a href="#why">Why</a>
+        <a class="pill-hoot" href="https://justhoot.fun" target="_blank" rel="noopener noreferrer">justhoot.fun ↗</a>
+      </div>
+    </nav>
+
+    <header class="hero" id="top">
+      <div class="badge"><span class="dot"></span> LIVE ON THE SKY · PAIRED WITH $HOOT</div>
+      <h1>In <span class="orange">Cahoot</span><br/>with Hoot</h1>
+      <p class="tagline">The best $HOOT pair on JustHoot. Two owls. One scheme. Endless hooting.</p>
+
+      <div class="hero-pair">
+        <img class="hero-owl cahoot" src="assets/cahoot-owl.png" alt="Cahoot the cowboy owl" />
+        <div class="hero-x" aria-hidden="true">×</div>
+        <img class="hero-owl hoot" src="assets/hoot-owl.png" alt="HOOT owl" />
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#ca">Grab the CA</a>
+        <a class="btn btn-ghost" href="https://justhoot.fun" target="_blank" rel="noopener noreferrer">Visit JustHoot</a>
+      </div>
+    </header>
+
+    <section id="lore">
+      <div class="card">
+        <div class="section-kicker">The Lore</div>
+        <h2 class="section-title">Two owls. One cahoot.</h2>
+        <p class="section-body">
+          Somewhere above the NEAR skies, a cowboy owl tipped his hat to the official JustHoot mascot.
+          They whispered. They winked. They shook wings.
+          <strong>Cahoot</strong> was born — not to compete with <strong>$HOOT</strong>, but to ride shotgun.
+          The best pair on the launchpad. Officially unofficial. Unofficially legendary.
+        </p>
+
+        <div class="grid-2" style="margin-top:1.5rem">
+          <div class="owl-card">
+            <img src="assets/cahoot-owl.png" alt="Cahoot" />
+            <h3>Cahoot <span class="tag">$CAHOOT</span></h3>
+            <p>Cowboy hat. Red bandana. Always scheming. The partner who shows up with a plan and a wink.</p>
+          </div>
+          <div class="owl-card">
+            <img src="assets/hoot-owl.png" alt="HOOT" />
+            <h3>Hoot <span class="tag">$HOOT</span></h3>
+            <p>The JustHoot platform owl. Wide eyes. Bigger vibes. The reason every trade goes hooooot.</p>
+          </div>
+        </div>
+
+        <div class="scheme">
+          <div class="emoji">🤝</div>
+          <p>
+            <strong>“We’re in cahoot.”</strong> —
+            While others chase charts alone, these two fly together.
+            Same sky. Same memes. Best HOOT pair energy only.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="why">
+      <div class="card">
+        <div class="section-kicker">Why Cahoot</div>
+        <h2 class="section-title">Built to be the best HOOT pair</h2>
+        <p class="section-body">
+          Colors borrowed from JustHoot’s orange glow. Attitude borrowed from the open sky.
+          Cahoot exists to amplify $HOOT — a sky-blue shout that you’re not flying solo.
+        </p>
+        <div class="features">
+          <div class="feat">
+            <div class="icon">🦉</div>
+            <h4>Paired with HOOT</h4>
+            <p>Native love for <a href="https://justhoot.fun" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:800;text-decoration:none">justhoot.fun</a> — the NEAR meme launchpad.</p>
+          </div>
+          <div class="feat">
+            <div class="icon">⛅</div>
+            <h4>Sky-blue twist</h4>
+            <p>Same Figtree fonts &amp; orange accent as HOOT — with a bright blue sky that stands out from the dark nest.</p>
+          </div>
+          <div class="feat">
+            <div class="icon">🌀</div>
+            <h4>Scroll buddies</h4>
+            <p>Both owls fly with you down the page — bobbing, tilting, swapping sides as you scroll.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ca">
+      <div class="card">
+        <div class="section-kicker">Contract</div>
+        <h2 class="section-title">Contract Address</h2>
+        <p class="section-body">
+          Placeholder for now — lock it in when Cahoot hatches on JustHoot.
+          Copy it, keep it safe, don’t get rugged by imposters.
+        </p>
+
+        <div class="ca-box">
+          <div class="ca-label">CA:</div>
+          <div class="ca-value" id="caValue">Coming soon / XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+          <button class="copy-btn" id="copyBtn" type="button">Copy</button>
+        </div>
+
+        <div class="pair-note">
+          <span class="chip">★ Best HOOT pair</span>
+          <span>Paired with <strong style="color:var(--text-dark)">$HOOT</strong> on</span>
+          <a href="https://justhoot.fun" target="_blank" rel="noopener noreferrer">justhoot.fun ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="hootline">Don’t overthink it. Just cahoot.</div>
+      <p>In cahoot with Hoot · Best pair in the sky ☁️🦉🤠</p>
+      <a href="https://justhoot.fun" target="_blank" rel="noopener noreferrer">justhoot.fun</a>
+      <p class="tiny">Not financial advice. Memecoins are chaotic evil (affectionate). DYOR. Fly safe.</p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const caText = "Coming soon / XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+      const copyBtn = document.getElementById("copyBtn");
+      const caValue = document.getElementById("caValue");
+
+      copyBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(caText);
+        } catch (e) {
+          const range = document.createRange();
+          range.selectNodeContents(caValue);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          document.execCommand("copy");
+          sel.removeAllRanges();
+        }
+        copyBtn.textContent = "Copied!";
+        copyBtn.classList.add("copied");
+        setTimeout(() => {
+          copyBtn.textContent = "Copy";
+          copyBtn.classList.remove("copied");
+        }, 1600);
+      });
+
+      // ===== SCROLL BUDDIES =====
+      const cahoot = document.getElementById("buddyCahoot");
+      const hoot = document.getElementById("buddyHoot");
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      let lastY = window.scrollY;
+      let lastT = performance.now();
+      let velocity = 0; // px/ms smoothed
+      let bobPhase = 0;
+      let cahootSide = "left"; // swaps periodically by scroll progress
+      let hootSide = "right";
+      let targetCahootY = window.innerHeight * 0.28;
+      let targetHootY = window.innerHeight * 0.48;
+      let curCahootY = targetCahootY;
+      let curHootY = targetHootY;
+      let flapC = 0;
+      let flapH = 0;
+
+      function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+      function onScroll() {
+        const y = window.scrollY;
+        const now = performance.now();
+        const dt = Math.max(8, now - lastT);
+        const rawV = (y - lastY) / dt;
+        velocity = velocity * 0.82 + rawV * 0.18;
+        lastY = y;
+        lastT = now;
+
+        const docH = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const progress = clamp(y / docH, 0, 1);
+
+        // swap sides in bands as you scroll
+        // 0-0.28 left/right, 0.28-0.55 swap, 0.55-0.78 swap again, then settle
+        if (progress < 0.22) { cahootSide = "left"; hootSide = "right"; }
+        else if (progress < 0.42) { cahootSide = "right"; hootSide = "left"; }
+        else if (progress < 0.62) { cahootSide = "left"; hootSide = "right"; }
+        else if (progress < 0.82) { cahootSide = "right"; hootSide = "left"; }
+        else { cahootSide = "left"; hootSide = "right"; }
+
+        // vertical travel — follow viewport with offset based on progress
+        const vh = window.innerHeight;
+        targetCahootY = vh * (0.18 + progress * 0.45);
+        targetHootY = vh * (0.38 + (1 - progress) * 0.28);
+      }
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      function frame(t) {
+        if (!reduced) {
+          bobPhase = t / 1000;
+          // smooth follow
+          curCahootY += (targetCahootY - curCahootY) * 0.08;
+          curHootY += (targetHootY - curHootY) * 0.07;
+
+          const speed = clamp(Math.abs(velocity) * 40, 0, 1.8);
+          const tiltC = clamp(velocity * 120, -18, 18);
+          const tiltH = clamp(-velocity * 100, -16, 16);
+          flapC = Math.sin(bobPhase * (3 + speed * 4)) * (6 + speed * 8);
+          flapH = Math.sin(bobPhase * (2.6 + speed * 3.5) + 1.2) * (5 + speed * 7);
+          const bobC = Math.sin(bobPhase * 2.1) * 10;
+          const bobH = Math.sin(bobPhase * 1.7 + 0.8) * 12;
+
+          const edge = Math.max(6, window.innerWidth * 0.01);
+          const size = cahoot.getBoundingClientRect().width || 120;
+
+          // peek: dip opacity / nudge inward near mid cards
+          const peek = 0.5 + 0.5 * Math.sin(bobPhase * 0.7 + lastY * 0.002);
+
+          // Cahoot
+          const cLeft = cahootSide === "left";
+          cahoot.style.left = cLeft ? edge + "px" : "auto";
+          cahoot.style.right = cLeft ? "auto" : edge + "px";
+          cahoot.style.top = (curCahootY + bobC) + "px";
+          const mirrorC = cLeft ? 1 : -1;
+          cahoot.style.transform =
+            `scaleX(${mirrorC}) rotate(${tiltC + flapC * 0.15}deg) translateY(${flapC * 0.15}px)`;
+          cahoot.style.opacity = String(0.88 + peek * 0.12);
+
+          // Hoot
+          const hLeft = hootSide === "left";
+          hoot.style.left = hLeft ? edge + "px" : "auto";
+          hoot.style.right = hLeft ? "auto" : edge + "px";
+          hoot.style.top = (curHootY + bobH) + "px";
+          const mirrorH = hLeft ? 1 : -1;
+          hoot.style.transform =
+            `scaleX(${mirrorH}) rotate(${tiltH + flapH * 0.12}deg) translateY(${flapH * 0.12}px)`;
+          hoot.style.opacity = String(0.85 + (1 - peek) * 0.15);
+
+          // hide slightly when overlapping nav at top
+          if (window.scrollY < 40) {
+            cahoot.style.opacity = "0.35";
+            hoot.style.opacity = "0.35";
+          }
+        } else {
+          cahoot.style.top = "28%";
+          hoot.style.top = "48%";
+        }
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>
