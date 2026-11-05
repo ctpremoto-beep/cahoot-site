@@ -411,15 +411,21 @@
       -webkit-user-drag: none;
       opacity: 0.95;
     }
-    .buddy.cahoot { left: 0.5rem; right: auto; top: 28%; }
-    .buddy.hoot { right: 0.5rem; left: auto; top: 46%; }
+    .buddy.cahoot { left: 0.5rem !important; right: auto !important; top: 28%; }
+    .buddy.hoot { right: 0.5rem !important; left: auto !important; top: 46%; }
     .buddy.sprite { background-repeat: no-repeat; background-size: 3600% 100%; background-position: 0 0; }
-    .buddy.cahoot.sprite { background-image: url("assets/strip-cowboy.webp?v=3"); aspect-ratio: 300 / 253; }
-    .buddy.hoot.sprite { background-image: url("assets/strip-hoot.webp?v=3"); aspect-ratio: 300 / 209; }
+    .buddy.cahoot.sprite { background-image: url("assets/strip-cowboy-v4.webp"); aspect-ratio: 300 / 253; }
+    .buddy.hoot.sprite { background-image: url("assets/strip-hoot-v4.webp"); aspect-ratio: 300 / 209; }
     @media (max-width: 640px) {
       :root { --buddy-size: clamp(78px, 20vw, 110px); }
-      .buddy.cahoot { left: -0.1rem; right: auto; }
-      .buddy.hoot { right: -0.1rem; left: auto; }
+      .buddy.cahoot { left: 0.15rem !important; right: auto !important; }
+      .buddy.hoot { right: 0.15rem !important; left: auto !important; }
+    }
+    .buddy-ver {
+      position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
+      z-index: 40; font: 600 11px/1 Figtree, system-ui, sans-serif;
+      color: #5a4632; background: rgba(255,248,239,0.9); padding: 4px 10px;
+      border-radius: 999px; pointer-events: none; letter-spacing: 0.02em;
     }
     /* peek behind cards via mix — handled in JS with opacity dips */
 
@@ -668,14 +674,10 @@
           const bobC = Math.sin(bobPhase * 2.1) * 10;
           const bobH = Math.sin(bobPhase * 1.7 + 0.8) * 12;
 
-          // Keep fixed sides; face inward (cowboy natural, hoot mirrored)
-          cahoot.style.left = "";
-          cahoot.style.right = "";
-          hoot.style.left = "";
-          hoot.style.right = "";
+          // Sides locked in CSS (!important). Only move top + gentle tilt.
           cahoot.style.top = (curCahootY + bobC) + "px";
           hoot.style.top = (curHootY + bobH) + "px";
-          cahoot.style.transform = `scaleX(1) rotate(${tiltC}deg)`;
+          cahoot.style.transform = `rotate(${tiltC}deg)`;
           hoot.style.transform = `scaleX(-1) rotate(${tiltH}deg)`;
           cahoot.style.opacity = "0.95";
           hoot.style.opacity = "0.95";
@@ -690,5 +692,6 @@
       requestAnimationFrame(frame);
     })();
   </script>
+  <div class="buddy-ver">buddies v4 · fixed sides</div>
 </body>
 </html>
