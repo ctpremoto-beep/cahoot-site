@@ -36,7 +36,7 @@
       --r: 16px;
       --r-lg: 24px;
       --shadow: 0 18px 50px rgba(14, 40, 80, 0.18), 0 2px 0 rgba(255,255,255,0.35) inset;
-      --buddy-size: clamp(88px, 14vw, 150px);
+      --buddy-size: clamp(110px, 16vw, 180px);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -404,22 +404,22 @@
       height: auto;
       z-index: 30;
       pointer-events: none;
-      will-change: transform, left, right, top;
+      will-change: transform, top;
       filter: drop-shadow(0 12px 18px rgba(20,50,90,0.28));
       transition: opacity 0.35s ease;
       user-select: none;
       -webkit-user-drag: none;
+      opacity: 0.95;
     }
-    .buddy.cahoot { left: 0.4rem; top: 30%; }
-    .buddy.hoot { right: 0.4rem; top: 42%; }
-    .buddy.hidden-mobile { }
+    .buddy.cahoot { left: 0.5rem; right: auto; top: 28%; }
+    .buddy.hoot { right: 0.5rem; left: auto; top: 46%; }
     .buddy.sprite { background-repeat: no-repeat; background-size: 3600% 100%; background-position: 0 0; }
-    .buddy.cahoot.sprite { background-image: url("assets/strip-cowboy.webp"); aspect-ratio: 300 / 253; }
-    .buddy.hoot.sprite { background-image: url("assets/strip-hoot.webp"); aspect-ratio: 300 / 209; }
+    .buddy.cahoot.sprite { background-image: url("assets/strip-cowboy.webp?v=2"); aspect-ratio: 300 / 253; }
+    .buddy.hoot.sprite { background-image: url("assets/strip-hoot.webp?v=2"); aspect-ratio: 300 / 209; }
     @media (max-width: 640px) {
-      :root { --buddy-size: clamp(64px, 18vw, 96px); }
-      .buddy.cahoot { left: -0.15rem; }
-      .buddy.hoot { right: -0.15rem; }
+      :root { --buddy-size: clamp(78px, 20vw, 110px); }
+      .buddy.cahoot { left: -0.1rem; right: auto; }
+      .buddy.hoot { right: -0.1rem; left: auto; }
     }
     /* peek behind cards via mix — handled in JS with opacity dips */
 
@@ -541,7 +541,7 @@
           <div class="feat">
             <div class="icon">🌀</div>
             <h4>Scroll buddies</h4>
-            <p>Both owls fly with you down the page — bobbing, tilting, swapping sides as you scroll.</p>
+            <p>Both owls fly with you down the page — flapping, winking, and bobbing as you scroll.</p>
           </div>
         </div>
       </div>
@@ -620,6 +620,7 @@
       })();
 
       // ===== SCROLL BUDDIES =====
+      // Fixed sides: cowboy LEFT, HOOT RIGHT — facing inward. Sprite strip does the flap/wink.
       const cahoot = document.getElementById("buddyCahoot");
       const hoot = document.getElementById("buddyHoot");
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -628,14 +629,10 @@
       let lastT = performance.now();
       let velocity = 0; // px/ms smoothed
       let bobPhase = 0;
-      let cahootSide = "left"; // swaps periodically by scroll progress
-      let hootSide = "right";
       let targetCahootY = window.innerHeight * 0.28;
       let targetHootY = window.innerHeight * 0.48;
       let curCahootY = targetCahootY;
       let curHootY = targetHootY;
-      let flapC = 0;
-      let flapH = 0;
 
       function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
@@ -651,14 +648,6 @@
         const docH = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
         const progress = clamp(y / docH, 0, 1);
 
-        // swap sides in bands as you scroll
-        // 0-0.28 left/right, 0.28-0.55 swap, 0.55-0.78 swap again, then settle
-        if (progress < 0.22) { cahootSide = "left"; hootSide = "right"; }
-        else if (progress < 0.42) { cahootSide = "right"; hootSide = "left"; }
-        else if (progress < 0.62) { cahootSide = "left"; hootSide = "right"; }
-        else if (progress < 0.82) { cahootSide = "right"; hootSide = "left"; }
-        else { cahootSide = "left"; hootSide = "right"; }
-
         // vertical travel — follow viewport with offset based on progress
         const vh = window.innerHeight;
         targetCahootY = vh * (0.18 + progress * 0.45);
@@ -671,52 +660,30 @@
       function frame(t) {
         if (!reduced) {
           bobPhase = t / 1000;
-          // smooth follow
           curCahootY += (targetCahootY - curCahootY) * 0.08;
           curHootY += (targetHootY - curHootY) * 0.07;
 
-          const speed = clamp(Math.abs(velocity) * 40, 0, 1.8);
-          const tiltC = clamp(velocity * 120, -18, 18);
-          const tiltH = clamp(-velocity * 100, -16, 16);
-          flapC = Math.sin(bobPhase * (3 + speed * 4)) * (6 + speed * 8);
-          flapH = Math.sin(bobPhase * (2.6 + speed * 3.5) + 1.2) * (5 + speed * 7);
+          const tiltC = clamp(velocity * 120, -14, 14);
+          const tiltH = clamp(-velocity * 100, -12, 12);
           const bobC = Math.sin(bobPhase * 2.1) * 10;
           const bobH = Math.sin(bobPhase * 1.7 + 0.8) * 12;
 
-          const edge = Math.max(6, window.innerWidth * 0.01);
-          const size = cahoot.getBoundingClientRect().width || 120;
-
-          // peek: dip opacity / nudge inward near mid cards
-          const peek = 0.5 + 0.5 * Math.sin(bobPhase * 0.7 + lastY * 0.002);
-
-          // Cahoot
-          const cLeft = cahootSide === "left";
-          cahoot.style.left = cLeft ? edge + "px" : "auto";
-          cahoot.style.right = cLeft ? "auto" : edge + "px";
+          // Keep fixed sides; face inward (cowboy natural, hoot mirrored)
+          cahoot.style.left = "";
+          cahoot.style.right = "";
+          hoot.style.left = "";
+          hoot.style.right = "";
           cahoot.style.top = (curCahootY + bobC) + "px";
-          const mirrorC = cLeft ? 1 : -1;
-          cahoot.style.transform =
-            `scaleX(${mirrorC}) rotate(${tiltC + flapC * 0.15}deg) translateY(${flapC * 0.15}px)`;
-          cahoot.style.opacity = String(0.88 + peek * 0.12);
-
-          // Hoot
-          const hLeft = hootSide === "left";
-          hoot.style.left = hLeft ? edge + "px" : "auto";
-          hoot.style.right = hLeft ? "auto" : edge + "px";
           hoot.style.top = (curHootY + bobH) + "px";
-          const mirrorH = hLeft ? 1 : -1;
-          hoot.style.transform =
-            `scaleX(${mirrorH}) rotate(${tiltH + flapH * 0.12}deg) translateY(${flapH * 0.12}px)`;
-          hoot.style.opacity = String(0.85 + (1 - peek) * 0.15);
-
-          // hide slightly when overlapping nav at top
-          if (window.scrollY < 40) {
-            cahoot.style.opacity = "0.35";
-            hoot.style.opacity = "0.35";
-          }
+          cahoot.style.transform = `scaleX(1) rotate(${tiltC}deg)`;
+          hoot.style.transform = `scaleX(-1) rotate(${tiltH}deg)`;
+          cahoot.style.opacity = "0.95";
+          hoot.style.opacity = "0.95";
         } else {
           cahoot.style.top = "28%";
           hoot.style.top = "48%";
+          cahoot.style.opacity = "0.95";
+          hoot.style.opacity = "0.95";
         }
         requestAnimationFrame(frame);
       }
