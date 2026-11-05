@@ -414,8 +414,8 @@
     .buddy.cahoot { left: 0.5rem; right: auto; top: 28%; }
     .buddy.hoot { right: 0.5rem; left: auto; top: 46%; }
     .buddy.sprite { background-repeat: no-repeat; background-size: 3600% 100%; background-position: 0 0; }
-    .buddy.cahoot.sprite { background-image: url("assets/strip-cowboy.webp?v=2"); aspect-ratio: 300 / 253; }
-    .buddy.hoot.sprite { background-image: url("assets/strip-hoot.webp?v=2"); aspect-ratio: 300 / 209; }
+    .buddy.cahoot.sprite { background-image: url("assets/strip-cowboy.webp?v=3"); aspect-ratio: 300 / 253; }
+    .buddy.hoot.sprite { background-image: url("assets/strip-hoot.webp?v=3"); aspect-ratio: 300 / 209; }
     @media (max-width: 640px) {
       :root { --buddy-size: clamp(78px, 20vw, 110px); }
       .buddy.cahoot { left: -0.1rem; right: auto; }
@@ -648,10 +648,10 @@
         const docH = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
         const progress = clamp(y / docH, 0, 1);
 
-        // vertical travel — follow viewport with offset based on progress
+        // both fly DOWN together as you scroll — never cross or swap sides
         const vh = window.innerHeight;
-        targetCahootY = vh * (0.18 + progress * 0.45);
-        targetHootY = vh * (0.38 + (1 - progress) * 0.28);
+        targetCahootY = vh * (0.22 + progress * 0.28); // left, upper
+        targetHootY = vh * (0.48 + progress * 0.28);   // right, lower
       }
 
       window.addEventListener("scroll", onScroll, { passive: true });
