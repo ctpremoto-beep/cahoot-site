@@ -413,6 +413,9 @@
     .buddy.cahoot { left: 0.4rem; top: 30%; }
     .buddy.hoot { right: 0.4rem; top: 42%; }
     .buddy.hidden-mobile { }
+    .buddy.sprite { background-repeat: no-repeat; background-size: 3600% 100%; background-position: 0 0; }
+    .buddy.cahoot.sprite { background-image: url("assets/strip-cowboy.webp"); aspect-ratio: 300 / 253; }
+    .buddy.hoot.sprite { background-image: url("assets/strip-hoot.webp"); aspect-ratio: 300 / 209; }
     @media (max-width: 640px) {
       :root { --buddy-size: clamp(64px, 18vw, 96px); }
       .buddy.cahoot { left: -0.15rem; }
@@ -447,8 +450,8 @@
   </div>
 
   <!-- Scroll buddies -->
-  <img class="buddy cahoot" id="buddyCahoot" src="assets/cahoot-owl.png" alt="" aria-hidden="true" />
-  <img class="buddy hoot" id="buddyHoot" src="assets/hoot-owl.png" alt="" aria-hidden="true" />
+  <div class="buddy cahoot sprite" id="buddyCahoot" aria-hidden="true"></div>
+  <div class="buddy hoot sprite" id="buddyHoot" aria-hidden="true"></div>
 
   <div class="wrap">
     <nav class="nav">
@@ -600,6 +603,21 @@
           copyBtn.classList.remove("copied");
         }, 1600);
       });
+
+      // ===== SPRITE LOOP (Ludo spritesheets, 36 frames) =====
+      (function () {
+        const els = [document.getElementById("buddyCahoot"), document.getElementById("buddyHoot")];
+        const fps = [36 / 2.46, 36 / 2.13];
+        const off = [0, 11];
+        function tick(t) {
+          els.forEach((el, k) => {
+            const i = (Math.floor(t / 1000 * fps[k]) + off[k]) % 36;
+            el.style.backgroundPositionX = (i / 35 * 100) + "%";
+          });
+          requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      })();
 
       // ===== SCROLL BUDDIES =====
       const cahoot = document.getElementById("buddyCahoot");
